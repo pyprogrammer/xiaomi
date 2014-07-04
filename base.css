@@ -4,16 +4,16 @@
 
 .survey, .results {
 	margin:0 auto;
-	width:34em;
+	width:100%;
 	display:block;
 	text-align:center;
+	max-width:640px;
 }
 
 .responseblock {
 	margin: 0 auto;
 	text-align:justify;
 	display:inline-block;
-	width:34em;
 }
 
 
@@ -30,7 +30,7 @@
 
 #submitButton {
 	display:block;
-	margin:1em auto;
+	margin:10px auto;
 }
 
 .center {
