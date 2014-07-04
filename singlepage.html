@@ -4,77 +4,139 @@
 <meta charset="utf-8">
 <meta name="viewport" content="target-dpi=device-dpi, width=device-width, user-scalable=no" />
 <title>寻找50亿次下载中的应用控</title>
-<link href="base.css" rel="stylesheet" type="text/css" />
-<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<style>
+.survey, .results {
+	margin:0 auto;
+	width:100%;
+	max-width:540px;
+}
+
+.responseblock {
+	margin: 0 auto;
+	text-align:justify;
+	display:inline-block;
+}
+
+.response {
+	display:inline-block;
+	text-align:justify;
+}
+
+.userinput {
+	width:50px;
+}
+
+#submitButton {
+	display:block;
+	margin:10px auto;
+}
+
+.center {
+	margin:0 auto;
+	width:100%;
+}
+
+#message {
+	width:100%;
+}
+</style>
 <script>
-$(function()
+window.onload = function()
 {
-	$('.results').hide();
-	$('.userinput').bind('focus',null,function(e)
+	document.getElementsByClassName('results')[0].style.display = 'none';
+	
+	//does the label-button binding for the user-provided inputs
+	var inputs = document.getElementsByClassName('userinput');
+	for (var i = 0; i < inputs.length; i++)
 	{
-		$('input[type=radio]',$(this).parent().parent()).prop('checked',true);
-	});
+		var input = inputs[i];
+		input.addEventListener('click',function(e)
+		{
+			if (!this.previousElementSibling.checked)
+			{
+				this.previousElementSibling.checked = true;
+			}
+		});
+	}
+	
 	function getScore(name)
 	{
-		var elements = $('input[name='+name+'][type=radio]:checked');
-		if (elements){
-			var result = parseInt(elements.data('score'),10);
-		}
-		if (result)
+		var elements = document.getElementsByName(name);
+		var checked;
+		for (var i=0; i<elements.length; i++)
 		{
-			return result;
+			var element = elements[i]
+			if (element.checked)
+			{
+				checked = element;
+			}
 		}
-		var userinput = $('input.userinput[name='+name+']');
-		if (userinput && userinput.val())
+		if (!checked)
 		{
-			console.log(userinput.val());
-			return parseInt(userinput.val(),10)/10;
+			return 0;
 		}
-		return 0;
+		if (checked.dataset.score)
+		{
+			return parseInt(checked.dataset.score,10);
+		}
+		return parseInt(checked.nextElementSibling.value) || 0;
 	}
 	function getText(name,_default)
 	{
-		var element = $('input[name='+name+'][type=radio]:checked');
-		if(element)
+		var elements = document.getElementsByName(name);
+		var checked;
+		for (var i=0; i<elements.length; i++)
 		{
-			var text = element.parent().text().trim() || element.next().val();
-			return text || _default;
-			
+			var element = elements[i]
+			if (element.checked)
+			{
+				checked = element;
+			}
 		}
-		return _default;
+		if (!checked)
+		{
+			return _default;
+		}
+		var parentText = checked.parentElement.textContent.trim();
+		if (parentText)
+		{
+			return parentText;
+		}
+		return checked.nextElementSibling.value.trim() || _default;
 	}
 	function getFavorite(_default)
 	{
-		var element = $('input[name=favorite_app]');
-		return element.val().trim() || _default;
+		var element = document.getElementsByName('favorite_app')[0];
+		return element.value.trim() || _default;
 	}
-	$('#submitButton').bind('click',null,function(e)
+	document.getElementById('submitButton').addEventListener('click',function(e)
 	{
-	  var text = "手机里安装了"+getText('downloads','很多')+"款的软件。为50亿次下载做出了突出的贡献，荣获突出贡献奖! 平时没跟喜欢的TA聊天吧!最离不开"+getFavorite('我们的')+"应用，所以要好好珍惜它哦。当然，商店妹会一值陪着你，因为你"+getText('satisfaction','表达不出来的爱')+"我！么么哒！"
-	  $("#message").text(text);
-	  var score = getScore('downloads') + getScore('first') + getScore('satisfaction');
-	  var rank;
-	  switch(Math.floor(score/10)){
-		  case 0:
-			  rank = '小米实习生';
-			  break;
-		  case 1:
-			  rank = '初级应用控';
-			  break;
-		  case 2:
-			  rank = '高级应用控';
-			  break;
-		  case 3:
-			  rank = '神级应用控';
-			  break;
-		  default:
-			  rank = '神级应用控';
-	  }
-	  $('#usertype').text(rank);
-	  $('.survey').hide();
-	  $('.results').show();
+		var text = "手机里安装了"+getText('downloads','很多')+"的软件。为50亿次下载做出了突出的贡献，荣获突出贡献奖! 平时没跟喜欢的TA聊天吧!最离不开"+getFavorite('我们的')+"应用，所以要好好珍惜它哦。当然，商店妹会一值陪着你，因为你"+getText('satisfaction','表达不出来的爱')+"我！么么哒！";
+		document.getElementById('message').textContent = text;
+		var score = getScore('downloads') + getScore('first') + getScore('satisfaction');
+		var rank;
+		switch(Math.floor(score/10)){
+			case 0:
+				rank = '小米实习生';
+				break;
+			case 1:
+				rank = '初级应用控';
+				break;
+			case 2:
+				rank = '高级应用控';
+				break;
+			case 3:
+				rank = '神级应用控';
+				break;
+			default:
+				rank = '神级应用控';
+		}
+		document.getElementById('usertype').textContent = rank;
+		document.getElementsByClassName('survey')[0].style.display = 'none';
+		document.getElementsByClassName('results')[0].style.display = null;
+	
 	});
-});
+}
 </script>
 </head>
 <body>
@@ -87,17 +149,17 @@ $(function()
     <div class="col-3">
       <div class="response">
         <label>
-          <input type="radio" name="first" value="米粉" data-score=10/>
+          <input type="radio" name="first" value="米粉" data-score="10"/>
           第一次打开小米手机 </label>
       </div>
       <div class="response">
         <label>
-          <input type="radio" name="first" value="软米粉" data-score=5/>
+          <input type="radio" name="first" value="软米粉" data-score="5"/>
           专门下载的小米应用商店</label>
       </div>
       <div class="response">
         <label>
-          <input type="radio" name="first" value="细米粉" data-score=0/>
+          <input type="radio" name="first" value="细米粉" data-score="0"/>
           直接使用app.mi.com </label>
       </div>
     </div>
@@ -107,17 +169,17 @@ $(function()
     <div class="col-4">
       <div class="response">
         <label>
-          <input type="radio" name="downloads" value="&lt;50" data-score=0/>
+          <input type="radio" name="downloads" value="&lt;50" data-score="0"/>
           50款以下 </label>
       </div>
       <div class="response">
         <label>
-          <input type="radio" name="downloads" value="50-100" data-score=5/>
+          <input type="radio" name="downloads" value="50-100" data-score="5"/>
           51-100款 </label>
       </div>
       <div class="response">
         <label>
-          <input type="radio" name="downloads" value="100+" data-score=10/>
+          <input type="radio" name="downloads" value="100+" data-score="10"/>
           100款以上 </label>
       </div>
       <div class="response">
@@ -167,17 +229,17 @@ $(function()
     <div class="col-3">
       <div class="response">
         <label>
-          <input type="radio" name="satisfaction" value="喜欢"/>
+          <input type="radio" name="satisfaction" value="喜欢" data-score="0"/>
           喜欢 </label>
       </div>
       <div class="response">
         <label>
-          <input type="radio" name="satisfaction" value="非常喜欢"/>
+          <input type="radio" name="satisfaction" value="非常喜欢" data-score="5"/>
           非常喜欢 </label>
       </div>
       <div class="response">
         <label>
-          <input type="radio" name="satisfaction" value="特别喜欢"/>
+          <input type="radio" name="satisfaction" value="特别喜欢" data-score="10"/>
           特别喜欢 </label>
       </div>
     </div>
