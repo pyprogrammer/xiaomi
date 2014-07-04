@@ -1,0 +1,52 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	text-align:center;
+}
+
+.maindiv {
+	margin:0 auto;
+	text-align:center;
+	display:inline-block;
+}
+
+.responseblock {
+	margin: 0 auto;
+	text-align:center;
+	display:inline-block;
+}
+
+.responseblock > div {
+	text-align:justify;
+	-webkit-column-width:30em;
+	-webkit-column-gap:5em;
+	-webkit-column-rule-width:30em;
+}
+
+div.response {
+	display:inline;
+	text-align:justify;
+}
+
+.userinput {
+	width:5em;
+}
+
+/*input[name=favorite_app] {
+	width:100%;
+}*/
+
+.submitButton {
+	display:block;
+	margin:2em auto;
+}
+
+.center {
+	margin:0 auto;
+	width:60%;
+}
+
+#message {
+	width:100%;
+}
