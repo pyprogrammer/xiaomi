@@ -38,14 +38,9 @@ $(function(){
 		return element.val().trim() || _default;
 	}
 	$('#submitButton').bind('click',null,function(e){
-	  var downloads = getScore('downloads');
-	  var favorite_app = $('input[name=favorite_app]').val() || '我们的';
-	  var satisfaction = getScore('satisfaction');
 	  var text = "手机里安装了"+getText('downloads','很多')+"款的软件。为50亿次下载做出了突出的贡献，荣获突出贡献奖! 平时没跟喜欢的TA聊天吧!最离不开"+getFavorite('我们的')+"应用，所以要好好珍惜它哦。当然，商店妹会一值陪着你，因为你"+getText('satisfaction','表达不出来的爱')+"我！么么哒！"
-	  var score = getScore('downloads') + getScore('first') + getScore('satisfaction');
 	  $("#message").text(text);
-	  $('.maindiv:first').hide();
-	  $('.maindiv:last-child').show();
+	  var score = getScore('downloads') + getScore('first') + getScore('satisfaction');
 	  var rank;
 	  switch(Math.floor(score/10)){
 		  case 0:
@@ -60,8 +55,12 @@ $(function(){
 		  case 3:
 			  rank = '神级应用控';
 			  break;
+		  default:
+			  rank = '神级应用控';
 	  }
 	  $('#usertype').text(rank);
+	  $('.maindiv:first').hide();
+	  $('.maindiv:last-child').show();
 	});
 });
 </script>
