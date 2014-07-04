@@ -7,23 +7,33 @@
 <link href="base.css" rel="stylesheet" type="text/css" />
 <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script>
-$(function(){
-	$('.maindiv:last-child').hide();
-	$('.userinput').bind('focus',null,function(e){$('input[type=radio]',$(this).parent().parent()).prop('checked',true);});
-	function getScore(name){
+$(function()
+{
+	$('.results').hide();
+	$('.userinput').bind('focus',null,function(e)
+	{
+		$('input[type=radio]',$(this).parent().parent()).prop('checked',true);
+	});
+	function getScore(name)
+	{
 		var elements = $('input[name='+name+'][type=radio]:checked');
 		if (elements){
 			var result = parseInt(elements.data('score'),10);
 		}
-		if (result) return result;
+		if (result)
+		{
+			return result;
+		}
 		var userinput = $('input.userinput[name='+name+']');
-		if (userinput && userinput.val()){
+		if (userinput && userinput.val())
+		{
 			console.log(userinput.val());
 			return parseInt(userinput.val(),10)/10;
 		}
 		return 0;
 	}
-	function getText(name,_default){
+	function getText(name,_default)
+	{
 		var element = $('input[name='+name+'][type=radio]:checked');
 		if(element)
 		{
@@ -33,11 +43,13 @@ $(function(){
 		}
 		return _default;
 	}
-	function getFavorite(_default){
+	function getFavorite(_default)
+	{
 		var element = $('input[name=favorite_app]');
 		return element.val().trim() || _default;
 	}
-	$('#submitButton').bind('click',null,function(e){
+	$('#submitButton').bind('click',null,function(e)
+	{
 	  var text = "手机里安装了"+getText('downloads','很多')+"款的软件。为50亿次下载做出了突出的贡献，荣获突出贡献奖! 平时没跟喜欢的TA聊天吧!最离不开"+getFavorite('我们的')+"应用，所以要好好珍惜它哦。当然，商店妹会一值陪着你，因为你"+getText('satisfaction','表达不出来的爱')+"我！么么哒！"
 	  $("#message").text(text);
 	  var score = getScore('downloads') + getScore('first') + getScore('satisfaction');
@@ -59,14 +71,14 @@ $(function(){
 			  rank = '神级应用控';
 	  }
 	  $('#usertype').text(rank);
-	  $('.maindiv:first').hide();
-	  $('.maindiv:last-child').show();
+	  $('.survey').hide();
+	  $('.results').show();
 	});
 });
 </script>
 </head>
 <body>
-<div class="maindiv">
+<div class="survey">
   <p> 寻找50亿次下载中的应用控 </p>
   <h1> 测测你是那种应用控？ </h1>
   <br />
@@ -173,7 +185,7 @@ $(function(){
   <button id="submitButton">立即测试</button>
 </div>
 </div>
-<div class="maindiv">
+<div class="results">
   <h2> 你是50亿次下载中的 </h2>
   <h1 id="usertype"> 神级应用控 </h1>
   <div class="center">
