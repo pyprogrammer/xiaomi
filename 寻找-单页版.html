@@ -1,19 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
 <meta name="viewport" content="target-dpi=device-dpi, width=device-width, user-scalable=no" />
-<title>Untitled Document</title>
-<link href="寻找-单页版.css" rel="stylesheet" type="text/css" />
-<script language="javascript" src="http://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
+<title>寻找50亿次下载中的应用控</title>
+<link href="base.css" rel="stylesheet" type="text/css" />
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script>
 $(function(){
 	$('.maindiv:last-child').hide();
-	$('.submitButton').bind('click',null,function(e){
-	var text = "手机里安装了{0}款的软件。为50亿次下载做出了突出的贡献，荣获突出贡献奖！\
-\
-平时没跟喜欢的TA聊天吧!最离不开{1}应用，所以要好好珍惜它哦。当然，商店妹会一值陪着你，因为你{2}我！么么哒！";
+	$('.userinput').bind('focus',null,function(e){$('input[type=radio]',$(this).parent().parent()).prop('checked',true);});
 	function getScore(name){
 		var elements = $('input[name='+name+'][type=radio]:checked');
 		if (elements){
@@ -31,41 +27,42 @@ $(function(){
 		var element = $('input[name='+name+'][type=radio]:checked');
 		if(element)
 		{
-			var text = element.next().text().trim() || element.next().children().val();
+			var text = element.parent().text().trim() || element.next().val();
 			return text || _default;
 			
 		}
 		return _default;
 	}
-	var formatter = $.validator.format($('#message').text());
-	var downloads = getScore('downloads');
-	var favorite_app = $('input[name=favorite_app]').val() || '我们的';
-	var satisfaction = getScore('satisfaction');
-	var text = formatter(getText('downloads','很多'),getText('favorite_app','我们的'), getText(satisfaction,'表达不出来的爱'));
-	var score = getScore('downloads') + getScore('first') + getScore('satisfaction');
-	$("#message").text(text);
-	$('.maindiv:first').hide();
-	$('.maindiv:last-child').show();
-	var rank;
-	switch(Math.floor(score/10)){
-		case 0:
-			rank = '小米实习生';
-			break;
-		case 1:
-			rank = '初级应用控';
-			break;
-		case 2:
-			rank = '高级应用控';
-			break;
-		case 3:
-			rank = '神级应用控';
-			break;
+	function getFavorite(_default){
+		var element = $('input[name=favorite_app]');
+		return element.val().trim() || _default;
 	}
-	$('#usertype').text(rank);
+	$('#submitButton').bind('click',null,function(e){
+	  var downloads = getScore('downloads');
+	  var favorite_app = $('input[name=favorite_app]').val() || '我们的';
+	  var satisfaction = getScore('satisfaction');
+	  var text = "手机里安装了"+getText('downloads','很多')+"款的软件。为50亿次下载做出了突出的贡献，荣获突出贡献奖! 平时没跟喜欢的TA聊天吧!最离不开"+getFavorite('我们的')+"应用，所以要好好珍惜它哦。当然，商店妹会一值陪着你，因为你"+getText('satisfaction','表达不出来的爱')+"我！么么哒！"
+	  var score = getScore('downloads') + getScore('first') + getScore('satisfaction');
+	  $("#message").text(text);
+	  $('.maindiv:first').hide();
+	  $('.maindiv:last-child').show();
+	  var rank;
+	  switch(Math.floor(score/10)){
+		  case 0:
+			  rank = '小米实习生';
+			  break;
+		  case 1:
+			  rank = '初级应用控';
+			  break;
+		  case 2:
+			  rank = '高级应用控';
+			  break;
+		  case 3:
+			  rank = '神级应用控';
+			  break;
+	  }
+	  $('#usertype').text(rank);
 	});
-	
-	$('.userinput').bind('keydown',null,function(e){$('input[type=radio]',$(this).parent().parent()).prop('checked',true);});
-	
 });
 </script>
 </head>
@@ -78,16 +75,19 @@ $(function(){
   <div class="responseblock">
     <div class="col-3">
       <div class="response">
-        <input type="radio" name="first" value="米粉" data-score=10/>
-        <label>第一次打开小米手机</label>
+        <label>
+          <input type="radio" name="first" value="米粉" data-score=10/>
+          第一次打开小米手机 </label>
       </div>
       <div class="response">
-        <input type="radio" name="first" value="软米粉" data-score=5/>
-        <label>专门下载的小米应用商店</label>
+        <label>
+          <input type="radio" name="first" value="软米粉" data-score=5/>
+          专门下载的小米应用商店</label>
       </div>
       <div class="response">
-        <input type="radio" name="first" value="细米粉" data-score=0/>
-        <label>直接使用app.mi.com</label>
+        <label>
+          <input type="radio" name="first" value="细米粉" data-score=0/>
+          直接使用app.mi.com </label>
       </div>
     </div>
   </div>
@@ -95,20 +95,23 @@ $(function(){
   <div class="responseblock">
     <div class="col-4">
       <div class="response">
-        <input type="radio" name="downloads" value="&lt;50" data-score=0/>
-        <label>50款以下</label>
-      </div>
-      <div class="response">
-        <input type="radio" name="downloads" value="50-100" data-score=5/>
-        <label>51-100款</label>
-      </div>
-      <div class="response">
-        <input type="radio" name="downloads" value="100+" data-score=10/>
-        <label>100款以上</label>
-      </div>
-      <div class="response">
-        <input type="radio" name="downloads" value=""/>
         <label>
+          <input type="radio" name="downloads" value="&lt;50" data-score=0/>
+          50款以下 </label>
+      </div>
+      <div class="response">
+        <label>
+          <input type="radio" name="downloads" value="50-100" data-score=5/>
+          51-100款 </label>
+      </div>
+      <div class="response">
+        <label>
+          <input type="radio" name="downloads" value="100+" data-score=10/>
+          100款以上 </label>
+      </div>
+      <div class="response">
+        <label>
+          <input type="radio" name="downloads" value=""/>
           <input type="number" min=0 name="downloads" class="userinput"/>
         </label>
       </div>
@@ -118,20 +121,23 @@ $(function(){
   <div class="responseblock">
     <div class="col-4">
       <div class="response">
-        <input type="radio" name="favorite" value="娱乐"/>
-        <label>娱乐消遺</label>
-      </div>
-      <div class="response">
-        <input type="radio" name="favorite" value="社交"/>
-        <label>社交与聊天</label>
-      </div>
-      <div class="response">
-        <input type="radio" name="favorite" value="影音"/>
-        <label>影音观听</label>
-      </div>
-      <div class="response">
-        <input type="radio" name="favorite" value=""/>
         <label>
+          <input type="radio" name="favorite" value="娱乐"/>
+          娱乐消遺 </label>
+      </div>
+      <div class="response">
+        <label>
+          <input type="radio" name="favorite" value="社交"/>
+          社交与聊天 </label>
+      </div>
+      <div class="response">
+        <label>
+          <input type="radio" name="favorite" value="影音"/>
+          影音观听 </label>
+      </div>
+      <div class="response">
+        <label>
+          <input type="radio" name="favorite" value=""/>
           <input type="text" name="favorite" class="userinput"/>
         </label>
       </div>
@@ -141,7 +147,7 @@ $(function(){
   <div class="responseblock">
     <div>
       <div class="response">
-        <input type="text" name="favorite_app" value="请填写"/>
+        <input name="favorite_app" type="text" value="请填写" />
       </div>
     </div>
   </div>
@@ -149,20 +155,23 @@ $(function(){
   <div class="responseblock">
     <div class="col-3">
       <div class="response">
-        <input type="radio" name="satisfaction" value="喜欢"/>
-        <label>喜欢</label>
+        <label>
+          <input type="radio" name="satisfaction" value="喜欢"/>
+          喜欢 </label>
       </div>
       <div class="response">
-        <input type="radio" name="satisfaction" value="非常喜欢"/>
-        <label>非常喜欢</label>
+        <label>
+          <input type="radio" name="satisfaction" value="非常喜欢"/>
+          非常喜欢 </label>
       </div>
       <div class="response">
-        <input type="radio" name="satisfaction" value="特别喜欢"/>
-        <label>特别喜欢</label>
+        <label>
+          <input type="radio" name="satisfaction" value="特别喜欢"/>
+          特别喜欢 </label>
       </div>
     </div>
   </div>
-  <button class="submitButton">立即测试</button>
+  <button id="submitButton">立即测试</button>
 </div>
 </div>
 <div class="maindiv">
@@ -170,11 +179,10 @@ $(function(){
   <h1 id="usertype"> 神级应用控 </h1>
   <div class="center">
     <p id="message"> 手机里安装了{0}款的软件。为50亿次下载做出了突出的贡献，荣获突出贡献奖！
-
+      
       平时没跟喜欢的TA聊天吧!最离不开{1}应用，所以要好好珍惜它哦。当然，商店妹会一值陪着你，因为你{2}我！么么哒！ </p>
   </div>
-  <button class="submitButton">分享微博赢小米平板</button>
+  <button>分享微博赢小米平板</button>
 </div>
-
 </body>
 </html>
